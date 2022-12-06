@@ -113,3 +113,13 @@ signupForm.addEventListener('submit', (e) => {
     $('#signupModal').modal('hide')
     signupForm.reset()
 })
+
+signinForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const email = signupForm['signin-email'].value
+    const pass = signupForm['signin-pass'].value
+
+    console.log(email,pass)
+    signinForm.reset()
+})

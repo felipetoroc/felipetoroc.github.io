@@ -57,3 +57,10 @@ export const signUp = (email,pass) => {
     console.log('signup')
   })
 }
+
+export const signIn = (email,pass) => {
+  createUserWithEmailAndPassword(auth,email,pass)
+  .then(userCredentials => {
+    console.log('signup')
+  })
+}
