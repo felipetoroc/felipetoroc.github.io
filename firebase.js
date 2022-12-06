@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword ,signOut} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs,onSnapshot,deleteDoc,doc,getDoc,updateDoc} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,7 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth()
+export const auth = getAuth()
 const db = getFirestore()
 
 //controladores actividades
@@ -34,6 +34,12 @@ export const deleteActi = id => deleteDoc(doc(db,'actividad',id))
 export const getActi =  id => getDoc(doc(db,'actividad',id))
 
 export const editActi = (id, newFields) => updateDoc(doc(db,'actividad',id),newFields)
+
+//controladores registro de horas
+
+export const registrarHora = (fechaIni,fechaFin,idActi,idUser) => addDoc(collection(db, 'registros'),{fechaIni,fechaFin,idActi,idUser})
+
+export const onGetRegistros = (callback) => onSnapshot(collection(db,'registros'),callback)
 
 //controladores colaboradores
 
@@ -59,8 +65,12 @@ export const signUp = (email,pass) => {
 }
 
 export const signIn = (email,pass) => {
-  createUserWithEmailAndPassword(auth,email,pass)
+  signInWithEmailAndPassword(auth,email,pass)
   .then(userCredentials => {
-    console.log('signup')
+    console.log('signin')
   })
+}
+
+export const logout = () => {
+  signOut(auth)
 }

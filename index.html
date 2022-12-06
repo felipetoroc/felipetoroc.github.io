@@ -17,76 +17,79 @@
     integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
   </head>
-  <body class="bg-dark">
+  <body >
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Registro de Actividades</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Iniciar sesión</a>
+              <a class="nav-link logout" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Iniciar sesión</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signupModal" >Registrarse</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Cerrar sesión</a>
+              <a class="nav-link login" href="#" id="btnLogout">Cerrar sesión</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-    <div class="container p-4">
+    <div class="container text-center logout">
       <div class="row">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h1 class="h4">Añadir actividad</h1>
-              <form id="form-actividad">
-                <label>Nombre</label>
-                <input
-                  class="form-control mb-3"
-                  type="text"
-                  placeholder="Nombre actividad"
-                  id="nombreAct"
-                />
-
-                <button class="btn btn-primary" id="btn-guardar-act">Guardar</button>
-              </form>
-            </div>
-          </div>
+        <div class="col">
+          <p class="h1">Bienvenido/a!</p>
         </div>
-        <div class="col-md-6" id="lista-actividades"></div>
-        <div class="col-md-6" id="lista-colaboradores"></div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h1 class="h4">Añadir usuario</h1>
-              <form id="form-usuario">
-                <label>Nombre</label>
-                <input
-                  class="form-control mb-3"
-                  type="text"
-                  placeholder="Nombre usuario"
-                  id="nombreUsr"
-                />
-
-                <button class="btn btn-primary" id="btn-guardar-usr">Guardar</button>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6" id="lista-actividades"></div>
-        <div class="col-md-6" id="lista-usuarios"></div>
       </div>
     </div>
-    <!-- Modal Signup-->
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container p-4 login" id="contenedor">
+      <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                <h1 class="h4">Añadir actividad</h1>
+                <form id="form-actividad">
+                    <label>Nombre</label>
+                    <input
+                    class="form-control mb-3"
+                    type="text"
+                    placeholder="Nombre actividad"
+                    id="nombreAct"
+                    />
+                    <button class="btn btn-primary" id="btn-guardar-act">Guardar</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" id="lista-actividades"></div>
+      </div>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha final</th>
+                <th scope="col">Nombre actividad</th>
+                <th scope="col">Colaborador</th>
+              </tr>
+            </thead>
+            <tbody id="listaRegistros">
+              <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6" id="lista-actividades"></div>
+      </div>
+    </div>
+    <!-- Modal registro de horas-->
+    <div class="modal fade" id="regHorasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -94,13 +97,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="signupForm">
+            <form id="regHorasForm">
               <div class="form-group">
-                <input type="text" id="signup-email" class="form-control" placeholder="Email" required>
+                <input type="datetime-local" id="fechaIni" class="form-control" placeholder="Fecha/hora inicio" required>
               </div>
               <br>
               <div class="form-group">
-                <input type="password" id="signup-pass" class="form-control" placeholder="Contraseña" required>
+                <input type="datetime-local" id="fechaFin" class="form-control" placeholder="Fecha/hora fin" required>
               </div>
               <br>
               <button type="submit" class="btn btn-primary">Guardar</button>
@@ -133,9 +136,6 @@
         </div>
       </div>
     </div>
-
-  
-
     <script type="module" src="./index.js"></script>
   </body>
 </html>
