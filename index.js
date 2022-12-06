@@ -94,42 +94,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                 </tr>
             `
         })
-
-        const btnsRegHora = actiLista.querySelectorAll('.btn-reg-hora')
-
-        btnsRegHora.forEach(btn => {
-            btn.addEventListener('click', ({target: {dataset}}) => {
-                id = dataset.id
-                console.log(id)
-            })
-        })
-
-
-        
-        const btnsEliminar = actiLista.querySelectorAll('.btn-eliminar')
-
-        btnsEliminar.forEach(btn => {
-            btn.addEventListener('click', ({target: {dataset}}) => {
-                deleteActi(dataset.id)
-            })
-        })
-        
-        const btnsEditar = actiLista.querySelectorAll('.btn-editar')
-
-        btnsEditar.forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                
-                const doc = await getActi(e.target.dataset.id)
-                const nombreActi = doc.data()
-
-                actiForm['nombreAct'].value = nombreActi.nombre
-                id = doc.id
-
-                editStatus = true
-                
-                actiForm['btn-guardar-act'].innerText = 'Editar'
-            })
-        })
     })
     // onGetUsers((querySnapshot) => {
     //     usrLista.innerHTML = ''
