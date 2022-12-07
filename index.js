@@ -13,13 +13,12 @@ const usrLista = document.getElementById('lista-usuarios')
 let editStatus = false
 let id = ''
 let userId = ''
-let userNombreGlobal = ''
 
 const loggedInLinks = document.querySelectorAll('.login')
 const loggedOutLinks = document.querySelectorAll('.logout')
 
 auth.onAuthStateChanged(async (user) => {
-    const nombreUsuario = ''
+    let nombreUsuario = ''
     if(user){
         userId = user.uid
         nombreUsuario = await getUser(user.uid)
@@ -30,7 +29,7 @@ auth.onAuthStateChanged(async (user) => {
         loggedOutLinks.forEach(link => link.style.display = 'block')
         loggedInLinks.forEach(link => link.style.display = 'none')
     }
-    spanUserNameGlobal.innerHTML += `Iniciado como: ${nombreUsuario.data().nombre}` 
+    spanUserNameGlobal.innerHTML = `${nombreUsuario.data().nombre}` 
 })
 
 window.addEventListener('DOMContentLoaded', async() => {
