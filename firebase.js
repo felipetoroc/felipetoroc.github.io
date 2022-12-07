@@ -23,7 +23,7 @@ const db = getFirestore()
 
 //controladores actividades
 
-export const guardarActi = (nombre) => addDoc(collection(db, 'actividad'),{nombre})
+export const guardarActi = (nombre,horas) => addDoc(collection(db, 'actividad'),{nombre,horas,status:true})
    
 export const getActis = () => getDocs(collection(db,'actividad'))
 
@@ -43,17 +43,17 @@ export const onGetRegistros = (callback) => onSnapshot(collection(db,'registros'
 
 //controladores colaboradores
 
-export const saveUser = (nombre) => addDoc(collection(db, 'usuarios'),{nombre})
+//export const saveUser = (nombre) => addDoc(collection(db, 'usuarios'),{nombre})
    
-export const getUsers = () => getDocs(collection(db,'usuarios'))
+//export const getUsers = () => getDocs(collection(db,'usuarios'))
 
-export const onGetUsers = (callback) => onSnapshot(collection(db,'usuarios'),callback)
+//export const onGetUsers = (callback) => onSnapshot(collection(db,'usuarios'),callback)
 
-export const deleteUser = id => deleteDoc(doc(db,'usuarios',id))
+//export const deleteUser = id => deleteDoc(doc(db,'usuarios',id))
 
 export const getUser =  id => getDoc(doc(db,'usuarios',id))
 
-export const editUser = (id, newFields) => updateDoc(doc(db,'usuarios',id),newFields)
+//export const editUser = (id, newFields) => updateDoc(doc(db,'usuarios',id),newFields)
 
 //controladores sesiones usuarios
 
