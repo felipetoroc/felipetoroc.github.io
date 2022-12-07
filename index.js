@@ -1,4 +1,4 @@
-import {getUser,onGetRegistros,registrarHora,auth,logout,signIn,guardarActi,getActis,onGetActis,deleteActi,getActi,editActi} from './firebase.js'
+import {getRegistroPorActividadId,getUser,onGetRegistros,registrarHora,auth,logout,signIn,guardarActi,getActis,onGetActis,deleteActi,getActi,editActi} from './firebase.js'
 import {cantidadHoras} from './functions.js'
 
 const actiForm = document.getElementById('form-actividad')
@@ -39,19 +39,28 @@ window.addEventListener('DOMContentLoaded', async() => {
         navTabContent.innerHTML = ''
         querySnapshot.forEach(doc => {
             const actividad = doc.data()
+            
             let nombre = actividad.nombre.replace(/\s/g,'')
             if(doc.data().status === true){
                 navTabHeader.innerHTML += `
-                    <button class="nav-link" id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">${actividad.nombre}</button>
+                    <button class="nav-link text-start" id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">${actividad.nombre}</button>
                     `
                 navTabContent.innerHTML += `
                 <div class="tab-pane fade" id="${nombre}" role="tabpanel" aria-labelledby="${nombre}-tab" tabindex="0">
                     <div class="card-body">
-                        <h5 class="card-title">${actividad.nombre}</h5>
-                        <p class="card-text">Horas totales: ${actividad.horas}</p>
-                        <button class="btn btn-primary btn-eliminar" data-id="${doc.id}">Eliminar</button>
-                        <button class="btn btn-secondary btn-editar" data-id="${doc.id}">Editar</button>
-                        <button class="btn btn-success btn-reg-hora" data-id="${doc.id}" data-bs-toggle="modal" data-bs-target="#regHorasModal">Registrar horas</button>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title">${actividad.nombre}</h5>
+                                <p class="card-text">Horas totales: ${actividad.horas}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-eliminar" data-id="${doc.id}">Eliminar</button>
+                                <button class="btn btn-secondary btn-editar" data-id="${doc.id}">Editar</button>
+                                <button class="btn btn-success btn-reg-hora" data-id="${doc.id}" data-bs-toggle="modal" data-bs-target="#regHorasModal">Registrar horas</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 `
@@ -160,8 +169,10 @@ regHorasForm.addEventListener('submit', (e) => {
     const fechaFin = regHorasForm['fechaFin'].value
     
     registrarHora(fechaIni,fechaFin,id,userId)
-    $('#regHorasModal').modal('hide')
+    
     regHorasForm.reset()
+
+    $('#regHorasModal').modal('hide')
 })
 
 

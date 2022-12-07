@@ -41,6 +41,8 @@ export const registrarHora = (fechaIni,fechaFin,idActi,idUser) => addDoc(collect
 
 export const onGetRegistros = (callback) => onSnapshot(collection(db,'registros'),callback)
 
+export const getRegistroPorActividadId = (idActi) => getDoc(doc(db,'registros',idActi))
+
 //controladores colaboradores
 
 //export const saveUser = (nombre) => addDoc(collection(db, 'usuarios'),{nombre})
