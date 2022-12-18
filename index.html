@@ -17,9 +17,8 @@
     crossorigin="anonymous"></script>
   </head>
   <body >
-    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" >
+    <nav class="navbar navbar-expand-lg bg-light" style="background-color: #e3f2fd;" >
       <div class="container-fluid">
-        
         <a class="navbar-brand" href="#">
           Registro
         </a>
@@ -27,7 +26,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link logout" href="#" data-bs-toggle="modal" data-bs-target="#signinModal">Iniciar sesión</a>
             </li>
@@ -35,54 +34,30 @@
               <span class="nav-link text-uppercase login" id="userNameGlobal"></span>
             </li>
             <li class="nav-item">
-              <a class="nav-link login" href="#" id="btnLogout">Cerrar sesión cambio</a>
+              <a class="nav-link text-uppercase login" href="#rowFormularioActividad">Ingresar actividad</a>
             </li>
           </ul>
+          <span class="navbar-text">
+            <button class="btn btn-danger login" href="#" id="btnLogout">Cerrar sesión</button>
+          </span>
         </div>
       </div>
     </nav>
-    <div class="container text-center logout">
+    <div class="container p-4 text-center logout">
       <div class="row">
         <div class="col">
           <p class="h1">Bienvenido/a!</p>
         </div>
       </div>
     </div>
-    <div class="container p-4 login" id="contenedor">
-      <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                <h1 class="h4">Añadir actividad</h1>
-                <form id="form-actividad">
-
-                    <label>Nombre</label>
-                    <input
-                    class="form-control mb-3"
-                    type="text"
-                    placeholder="Nombre actividad"
-                    id="nombreAct"
-                    required
-                    />
-                    <label>Horas Totales</label>
-                    <input
-                    class="form-control mb-3"
-                    type="number"
-                    placeholder="Cantidad de horas totales"
-                    id="horasTotales"
-                    required
-                    />
-                    <button class="btn btn-primary" id="btn-guardar-act">Guardar</button>
-                </form>
-                </div>
-            </div>
-        </div>
-      </div>
+    <div class="container p-1 login" id="contenedor">
       <div class="row">
         <div id="lista-actividades">
           <div class="col-md-12">
             <div class="card">
-              <h5 class="card-header">Actividades</h5>
+              <div class="card-header">
+                Actividades
+              </div>
               <div class="card-body">
                 <div class="d-flex align-items-start">
                   <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -118,7 +93,36 @@
             </tbody>
           </table>
         </div>
-        <div class="col-md-6" id="lista-actividades"></div>
+        
+      </div>
+      <div class="row" id="rowFormularioActividad">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                <h1 class="h4">Añadir actividad</h1>
+                <form id="form-actividad">
+
+                    <label>Nombre</label>
+                    <input
+                    class="form-control mb-3"
+                    type="text"
+                    placeholder="Nombre actividad"
+                    id="nombreAct"
+                    required
+                    />
+                    <label>Horas Totales</label>
+                    <input
+                    class="form-control mb-3"
+                    type="number"
+                    placeholder="Cantidad de horas totales"
+                    id="horasTotales"
+                    required
+                    />
+                    <button class="btn btn-primary" id="btn-guardar-act">Guardar</button>
+                </form>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
     <!-- Modal registro de horas-->

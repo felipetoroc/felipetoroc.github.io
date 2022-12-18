@@ -1,4 +1,4 @@
-import {getRegistroPorActividadId,getUser,onGetRegistros,registrarHora,auth,logout,signIn,guardarActi,getActis,onGetActis,deleteActi,getActi,editActi} from './firebase.js'
+import {getRegistros,getUser,onGetRegistros,registrarHora,auth,logout,signIn,guardarActi,getActis,onGetActis,deleteActi,getActi,editActi} from './firebase.js'
 import {cantidadHoras} from './functions.js'
 
 const actiForm = document.getElementById('form-actividad')
@@ -8,11 +8,13 @@ const regHorasForm = document.getElementById('regHorasForm')
 const navTabHeader = document.getElementById('v-pills-tab')
 const navTabContent = document.getElementById('v-pills-tabContent')
 const spanUserNameGlobal = document.getElementById('userNameGlobal')
+const dropdownActividades = document.getElementById('dropdownActividades')
 const usrForm = document.getElementById('form-usuario')
 const usrLista = document.getElementById('lista-usuarios')
 let editStatus = false
-let id = ''
+let idActi = ''
 let userId = ''
+let selectedActi = ''
 
 const loggedInLinks = document.querySelectorAll('.login')
 const loggedOutLinks = document.querySelectorAll('.logout')
@@ -33,18 +35,20 @@ auth.onAuthStateChanged(async (user) => {
 })
 
 window.addEventListener('DOMContentLoaded', async() => {
-
+    
     onGetActis((querySnapshot) => {
         navTabHeader.innerHTML = ''
         navTabContent.innerHTML = ''
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach(async (doc) => {
             const actividad = doc.data()
-            
             let nombre = actividad.nombre.replace(/\s/g,'')
-            if(doc.data().status === true){
+            
+            if(doc.data().estado === true){
                 navTabHeader.innerHTML += `
-                    <button class="nav-link text-start" id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">${actividad.nombre}</button>
-                    `
+                <button class="nav-link dropdown-item text-start" id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">
+                    ${actividad.nombre}
+                </button>
+                `
                 navTabContent.innerHTML += `
                 <div class="tab-pane fade" id="${nombre}" role="tabpanel" aria-labelledby="${nombre}-tab" tabindex="0">
                     <div class="card-body">
@@ -59,19 +63,21 @@ window.addEventListener('DOMContentLoaded', async() => {
                                 <button class="btn btn-primary btn-eliminar" data-id="${doc.id}">Eliminar</button>
                                 <button class="btn btn-secondary btn-editar" data-id="${doc.id}">Editar</button>
                                 <button class="btn btn-success btn-reg-hora" data-id="${doc.id}" data-bs-toggle="modal" data-bs-target="#regHorasModal">Registrar horas</button>
+                                <button class="btn btn-primary btn-selected-acti" data-id="${doc.id}">Seleccionar</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 `
             }
+            
         })
 
         const btnsRegHora = actiLista.querySelectorAll('.btn-reg-hora')
 
         btnsRegHora.forEach(btn => {
             btn.addEventListener('click', ({target: {dataset}}) => {
-                id = dataset.id
+                idActi = dataset.id
             })
         })
 
@@ -79,7 +85,7 @@ window.addEventListener('DOMContentLoaded', async() => {
 
         btnsEliminar.forEach(btn => {
             btn.addEventListener('click', ({target: {dataset}}) => {
-                editActi(dataset.id,{status:false})
+                editActi(dataset.id,{estado:false})
             })
         })
         
@@ -92,33 +98,27 @@ window.addEventListener('DOMContentLoaded', async() => {
                 const nombreActi = doc.data()
                 
                 actiForm['nombreAct'].value = nombreActi.nombre
-                id = doc.id
+                idActi = doc.id
 
                 editStatus = true
                 
                 actiForm['btn-guardar-act'].innerText = 'Editar'
             })
         })
-    })
 
-    onGetRegistros((querySnapshot) => {
-        regiLista.innerHTML = ''
-        querySnapshot.forEach(async (doc) => {
-            const registro = doc.data()
-            const actividad = await getActi(registro.idActi)
-            const usuario = await getUser(registro.idUser)
-            const horas = cantidadHoras(new Date(registro.fechaIni), new Date(registro.fechaFin))
-            regiLista.innerHTML += `
-                <tr>
-                    <td>${registro.fechaIni}</td>
-                    <td>${registro.fechaFin}</td>
-                    <td>${actividad.data().nombre}</td>
-                    <td>${usuario.data().nombre}</td>
-                    <td>${horas}</td>
-                </tr>
-            `
+        const btnsSelectedActi = actiLista.querySelectorAll('.btn-selected-acti')
+
+        btnsSelectedActi.forEach(btn => {
+            btn.addEventListener('click', ({target: {dataset}}) => {
+                
+                poblarRegistros(dataset.id)
+            })
         })
     })
+
+    
+
+    
     // onGetUsers((querySnapshot) => {
     //     usrLista.innerHTML = ''
     //     querySnapshot.forEach(doc => {
@@ -152,9 +152,9 @@ actiForm.addEventListener('submit', (e) => {
     const horas = actiForm['horasTotales'].value
 
     if(!editStatus){
-        guardarActi(nombre,horas)
+        guardarActi({nombre,horas,estado:true})
     }else{
-        editActi(id,{nombre,horas})
+        editActi(idActi,{nombre,horas})
 
         editStatus = false
     }
@@ -168,11 +168,13 @@ regHorasForm.addEventListener('submit', (e) => {
     const fechaIni = regHorasForm['fechaIni'].value
     const fechaFin = regHorasForm['fechaFin'].value
     
-    registrarHora(fechaIni,fechaFin,id,userId)
+    registrarHora({fechaIni,fechaFin,idActi,userId})
     
     regHorasForm.reset()
 
     $('#regHorasModal').modal('hide')
+    
+    poblarRegistros(idActi)
 })
 
 
@@ -213,4 +215,26 @@ btnLogout.addEventListener('click', (e) =>{
     logout()
 })
 
-
+function poblarRegistros(actiId){
+    regiLista.innerHTML = ''
+    onGetRegistros((querySnapshot) => {
+        querySnapshot.forEach(async (doc) => {
+            if(actiId === doc.data().idActi){
+                const registro = doc.data()
+                const actividad = await getActi(registro.idActi)
+                const usuario = await getUser(registro.userId)
+                const horas = cantidadHoras(new Date(registro.fechaIni), new Date(registro.fechaFin))
+                regiLista.innerHTML += `
+                    <tr>
+                        <td>${registro.fechaIni}</td>
+                        <td>${registro.fechaFin}</td>
+                        <td>${actividad.data().nombre}</td>
+                        <td>${usuario.data().nombre}</td>
+                        <td>${horas}</td>
+                    </tr>
+                `
+            }
+        })
+    })
+    
+}

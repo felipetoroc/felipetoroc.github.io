@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword ,signOut} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs,onSnapshot,deleteDoc,doc,getDoc,updateDoc} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js"
+import { query, where, getFirestore, collection, addDoc, getDocs,onSnapshot,deleteDoc,doc,getDoc,updateDoc} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,25 +23,29 @@ const db = getFirestore()
 
 //controladores actividades
 
-export const guardarActi = (nombre,horas) => addDoc(collection(db, 'actividad'),{nombre,horas,status:true})
+export const guardarActi = (objActividad) => addDoc(collection(db, 'actividades'),objActividad)
    
-export const getActis = () => getDocs(collection(db,'actividad'))
+export const getActis = () => getDocs(collection(db,'actividades'))
 
-export const onGetActis = (callback) => onSnapshot(collection(db,'actividad'),callback)
+export const onGetActis = (callback) => onSnapshot(collection(db,'actividades'),callback)
 
-export const deleteActi = id => deleteDoc(doc(db,'actividad',id))
+export const deleteActi = id => deleteDoc(doc(db,'actividades',id))
 
-export const getActi =  id => getDoc(doc(db,'actividad',id))
+export const getActi =  id => getDoc(doc(db,'actividades',id))
 
-export const editActi = (id, newFields) => updateDoc(doc(db,'actividad',id),newFields)
+export const editActi = (id, newFields) => updateDoc(doc(db,'actividades',id),newFields)
 
 //controladores registro de horas
 
-export const registrarHora = (fechaIni,fechaFin,idActi,idUser) => addDoc(collection(db, 'registros'),{fechaIni,fechaFin,idActi,idUser})
+export const registrarHora = (objRegistro) => addDoc(collection(db, 'registros'),objRegistro)
 
 export const onGetRegistros = (callback) => onSnapshot(collection(db,'registros'),callback)
 
 export const getRegistroPorActividadId = (idActi) => getDoc(doc(db,'registros',idActi))
+
+export const getRegistros = () => getDocs(collection(db,'registros'))
+
+
 
 //controladores colaboradores
 
