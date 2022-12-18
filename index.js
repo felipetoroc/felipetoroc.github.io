@@ -45,9 +45,11 @@ window.addEventListener('DOMContentLoaded', async() => {
             
             if(doc.data().estado === true){
                 navTabHeader.innerHTML += `
-                <button class="nav-link dropdown-item text-start" id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">
-                    ${actividad.nombre}
-                </button>
+                <li>
+                    <a class="nav-link dropdown-item text-start link-selected-acti" data-id=${doc.id} id="${nombre}-tab" data-bs-toggle="pill" data-bs-target="#${nombre}" type="button" role="tab" aria-controls="${nombre}">
+                        ${actividad.nombre}
+                    </a>
+                </li>
                 `
                 navTabContent.innerHTML += `
                 <div class="tab-pane fade" id="${nombre}" role="tabpanel" aria-labelledby="${nombre}-tab" tabindex="0">
@@ -63,7 +65,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                                 <button class="btn btn-primary btn-eliminar" data-id="${doc.id}">Eliminar</button>
                                 <button class="btn btn-secondary btn-editar" data-id="${doc.id}">Editar</button>
                                 <button class="btn btn-success btn-reg-hora" data-id="${doc.id}" data-bs-toggle="modal" data-bs-target="#regHorasModal">Registrar horas</button>
-                                <button class="btn btn-primary btn-selected-acti" data-id="${doc.id}">Seleccionar</button>
                             </div>
                         </div>
                     </div>
@@ -106,14 +107,15 @@ window.addEventListener('DOMContentLoaded', async() => {
             })
         })
 
-        const btnsSelectedActi = actiLista.querySelectorAll('.btn-selected-acti')
-
-        btnsSelectedActi.forEach(btn => {
-            btn.addEventListener('click', ({target: {dataset}}) => {
-                
+        const linksSelectedActi = actiLista.querySelectorAll('.link-selected-acti')
+        
+        linksSelectedActi.forEach(link => {
+            link.addEventListener('click',({target:{dataset}}) =>{
+               
                 poblarRegistros(dataset.id)
             })
         })
+
     })
 
     
@@ -150,9 +152,15 @@ actiForm.addEventListener('submit', (e) => {
 
     const nombre = actiForm['nombreAct'].value
     const horas = actiForm['horasTotales'].value
+    const tipo = actiForm['tipoActividad'].value
 
     if(!editStatus){
-        guardarActi({nombre,horas,estado:true})
+        if(tipo != 'Seleccione tipo'){
+            guardarActi({nombre,horas,estado:true,tipo})
+        }else{
+            $('#faltaTipoAlerta').show()
+        }
+        
     }else{
         editActi(idActi,{nombre,horas})
 

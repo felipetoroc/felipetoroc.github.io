@@ -56,12 +56,18 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                Actividades
+                <div class="dropdown">
+                  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar actividad...
+                  </a>
+                  <div class="nav flex-column nav-pills"  role="tablist" aria-orientation="vertical">
+                    <ul class="dropdown-menu" id="v-pills-tab">
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
                 <div class="d-flex align-items-start">
-                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  </div>
                   <div class="tab-content" id="v-pills-tabContent">
                   </div>
                 </div>
@@ -118,9 +124,20 @@
                     id="horasTotales"
                     required
                     />
+                    <label>Tipo de actividad</label>
+                    <select id="tipoActividad" class="form-select" aria-label="Default select example" required>
+                      <option selected>Seleccione tipo</option>
+                      <option value="general">General</option>
+                      <option value="auditoria">Auditoria</option>
+                    </select>
+                    <div id="faltaTipoAlerta" class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none">
+                      <strong>Error!</strong> Debe seleccionar un tipo de actividad
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <br>
                     <button class="btn btn-primary" id="btn-guardar-act">Guardar</button>
                 </form>
-                </div>
+              </div>
             </div>
         </div>
       </div>
